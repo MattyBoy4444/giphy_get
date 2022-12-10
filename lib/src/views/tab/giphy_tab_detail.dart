@@ -142,7 +142,6 @@ class _GiphyTabDetailState extends State<GiphyTabDetail> {
     double _aspectRatio = (double.parse(gif.images!.fixedWidth.width) / double.parse(gif.images!.fixedWidth.height));
 
     return InkWell(
-        focusColor: Theme.of(context).primaryColor,
         onTap: () => _selectedGif(gif),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
