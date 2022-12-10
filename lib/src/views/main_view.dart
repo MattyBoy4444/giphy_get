@@ -62,10 +62,17 @@ class _MainViewState extends State<MainView> with SingleTickerProviderStateMixin
       });
 
   Widget _bottomSheetBody() => Shortcuts(
-        shortcuts: const <ShortcutActivator, Intent>{
-          SingleActivator(LogicalKeyboardKey.arrowDown): NextFocusIntent(),
-          SingleActivator(LogicalKeyboardKey.arrowUp): PreviousFocusIntent(),
-          SingleActivator(LogicalKeyboardKey.select): ActivateIntent(),
+        // shortcuts: const <ShortcutActivator, Intent>{
+        //   SingleActivator(LogicalKeyboardKey.arrowDown): NextFocusIntent(),
+        //   SingleActivator(LogicalKeyboardKey.arrowUp): PreviousFocusIntent(),
+        //   SingleActivator(LogicalKeyboardKey.select): ActivateIntent(),
+        // },
+        shortcuts: <LogicalKeySet, Intent>{
+          LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
+          LogicalKeySet(LogicalKeyboardKey.arrowDown):
+              const DirectionalFocusIntent(TraversalDirection.down, ignoreTextFields: false),
+          LogicalKeySet(LogicalKeyboardKey.arrowUp):
+              const DirectionalFocusIntent(TraversalDirection.up, ignoreTextFields: false),
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,
