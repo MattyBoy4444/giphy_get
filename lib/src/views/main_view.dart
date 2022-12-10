@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:giphy_get/src/providers/sheet_provider.dart';
 import 'package:giphy_get/src/views/appbar/searchappbar.dart';
 import 'package:giphy_get/src/views/tab/giphy_tab_bar.dart';
@@ -14,8 +15,7 @@ class MainView extends StatefulWidget {
   _MainViewState createState() => _MainViewState();
 }
 
-class _MainViewState extends State<MainView>
-    with SingleTickerProviderStateMixin {
+class _MainViewState extends State<MainView> with SingleTickerProviderStateMixin {
   // Scroll Controller
   late ScrollController _scrollController;
 
@@ -61,20 +61,27 @@ class _MainViewState extends State<MainView>
         return _bottomSheetBody();
       });
 
-  Widget _bottomSheetBody() => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          GiphyTabTop(),
-          GiphyTabBar(
-            tabController: _tabController,
-          ),
-          SearchAppBar(scrollController: this._scrollController),
-          Expanded(
-              child: GiphyTabView(
-            tabController: _tabController,
-            scrollController: this._scrollController,
-          )),
-          GiphyTabBottom()
-        ],
+  Widget _bottomSheetBody() => Shortcuts(
+        shortcuts: const <ShortcutActivator, Intent>{
+          SingleActivator(LogicalKeyboardKey.arrowDown): NextFocusIntent(),
+          SingleActivator(LogicalKeyboardKey.arrowUp): PreviousFocusIntent(),
+          SingleActivator(LogicalKeyboardKey.select): ActivateIntent(),
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            GiphyTabTop(),
+            GiphyTabBar(
+              tabController: _tabController,
+            ),
+            SearchAppBar(scrollController: this._scrollController),
+            Expanded(
+                child: GiphyTabView(
+              tabController: _tabController,
+              scrollController: this._scrollController,
+            )),
+            GiphyTabBottom()
+          ],
+        ),
       );
 }
