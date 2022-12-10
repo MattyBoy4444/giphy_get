@@ -42,8 +42,8 @@ class _SearchAppBarState extends State<SearchAppBar> {
     _focus.addListener(_focusListener);
 
     //Set Texfielf
-    _textEditingController = new TextEditingController(
-        text: Provider.of<AppBarProvider>(context, listen: false).queryText);
+    _textEditingController =
+        new TextEditingController(text: Provider.of<AppBarProvider>(context, listen: false).queryText);
 
     // Listener TextField
     _textEditingController.addListener(() {
@@ -98,8 +98,8 @@ class _SearchAppBarState extends State<SearchAppBar> {
                     borderRadius: BorderRadius.circular(10),
                     child: TextField(
                       textAlignVertical: TextAlignVertical.center,
-                      autofocus: _sheetProvider.initialExtent ==
-                          SheetProvider.maxExtent,
+                      //autofocus: _sheetProvider.initialExtent ==
+                      //    SheetProvider.maxExtent,
                       focusNode: _focus,
                       controller: _textEditingController,
                       decoration: InputDecoration(
@@ -109,8 +109,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
                         suffixIcon: IconButton(
                             icon: Icon(
                               Icons.clear,
-                              color:
-                                  Theme.of(context).textTheme.bodyText1!.color!,
+                              color: Theme.of(context).textTheme.bodyText1!.color!,
                             ),
                             onPressed: () {
                               setState(() {
@@ -136,13 +135,10 @@ class _SearchAppBarState extends State<SearchAppBar> {
       return Icon(Icons.search);
     } else {
       return ShaderMask(
-        shaderCallback: (bounds) => LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Color(0xFFFF6666),
-              Color(0xFF9933FF),
-            ]).createShader(bounds),
+        shaderCallback: (bounds) => LinearGradient(begin: Alignment.topRight, end: Alignment.bottomLeft, colors: [
+          Color(0xFFFF6666),
+          Color(0xFF9933FF),
+        ]).createShader(bounds),
         child: Transform(
             alignment: Alignment.center,
             transform: Matrix4.rotationY(pi),
@@ -156,8 +152,7 @@ class _SearchAppBarState extends State<SearchAppBar> {
 
   void _focusListener() {
     // Set to max extent height if Textfield has focus
-    if (_focus.hasFocus &&
-        _sheetProvider.initialExtent == SheetProvider.minExtent) {
+    if (_focus.hasFocus && _sheetProvider.initialExtent == SheetProvider.minExtent) {
       _sheetProvider.initialExtent = SheetProvider.maxExtent;
     }
     print("Focus : ${_focus.hasFocus}");
