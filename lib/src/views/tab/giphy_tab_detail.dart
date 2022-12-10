@@ -141,19 +141,20 @@ class _GiphyTabDetailState extends State<GiphyTabDetail> {
   Widget _item(GiphyGif gif) {
     double _aspectRatio = (double.parse(gif.images!.fixedWidth.width) / double.parse(gif.images!.fixedWidth.height));
 
-    return ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
-        child: InkWell(
-            onTap: () => _selectedGif(gif),
-            child: gif.images == null || gif.images?.fixedWidth.webp == null
-                ? Container()
-                : Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: ExtendedImage.network(gif.images!.fixedWidth.webp!,
-                        cache: true,
-                        gaplessPlayback: true,
-                        fit: BoxFit.fill,
-                        headers: {'accept': 'image/*'}, loadStateChanged: (state) {
+    return InkWell(
+        focusColor: Theme.of(context).primaryColor,
+        onTap: () => _selectedGif(gif),
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: gif.images == null || gif.images?.fixedWidth.webp == null
+                  ? Container()
+                  : ExtendedImage.network(gif.images!.fixedWidth.webp!,
+                      cache: true,
+                      gaplessPlayback: true,
+                      fit: BoxFit.fill,
+                      headers: {'accept': 'image/*'}, loadStateChanged: (state) {
                       return AnimatedSwitcher(
                         duration: const Duration(milliseconds: 350),
                         child: gif.images == null
@@ -188,8 +189,8 @@ class _GiphyTabDetailState extends State<GiphyTabDetail> {
                                   ),
                                 )),
                       );
-                    }),
-                  )));
+                    })),
+        ));
   }
 
   Future<void> _loadMore() async {
