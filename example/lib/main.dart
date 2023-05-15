@@ -16,14 +16,13 @@ Future<void> main() async {
     await dotenv.load();
   }
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(
-        create: (ctx) => ThemeProvider(currentTheme: ThemeMode.system))
-  ], child: const MyApp()));
+  runApp(MultiProvider(
+      providers: [ChangeNotifierProvider(create: (ctx) => ThemeProvider(currentTheme: ThemeMode.system))],
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -57,33 +56,33 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   final String title;
-  const MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
   @override
   // ignore: library_private_types_in_public_api
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  ThemeProvider themeProvider;
+  ThemeProvider? themeProvider;
 
   //Gif
-  GiphyGif currentGif;
+  GiphyGif? currentGif;
 
   // Giphy Client
-  GiphyClient client;
+  GiphyClient? client;
 
   // Random ID
   String randomId = "";
 
-  String giphyApiKey = dotenv.env["GIPHY_API_KEY"];
+  String? giphyApiKey = dotenv.env["GIPHY_API_KEY"];
 
   @override
   void initState() {
     super.initState();
 
-    client = GiphyClient(apiKey: giphyApiKey, randomId: '');
+    client = GiphyClient(apiKey: giphyApiKey!, randomId: '');
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      client.getRandomId().then((value) {
+      client!.getRandomId().then((value) {
         setState(() {
           randomId = value;
         });
@@ -100,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return GiphyGetWrapper(
-        giphy_api_key: giphyApiKey,
+        giphy_api_key: giphyApiKey!,
         builder: (stream, giphyGetWrapper) {
           stream.listen((gif) {
             setState(() {
@@ -128,11 +127,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                       const Expanded(child: Text("Dark Mode")),
                       Switch(
-                          value:
-                              Theme.of(context).brightness == Brightness.dark,
+                          value: Theme.of(context).brightness == Brightness.dark,
                           onChanged: (value) {
-                            themeProvider.setCurrentTheme(
-                                value ? ThemeMode.dark : ThemeMode.light);
+                            themeProvider!.setCurrentTheme(value ? ThemeMode.dark : ThemeMode.light);
                           })
                     ],
                   ),
@@ -151,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ? SizedBox(
                           child: GiphyGifWidget(
                             imageAlignment: Alignment.center,
-                            gif: currentGif,
+                            gif: currentGif!,
                             giphyGetWrapper: giphyGetWrapper,
                             borderRadius: BorderRadius.circular(30),
                             showGiphyLabel: true,
@@ -166,8 +163,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   giphyGetWrapper.getGif('', context);
                 },
                 tooltip: 'Open Sticker',
-                child: const Icon(Icons
-                    .insert_emoticon)), // This trailing comma makes auto-formatting nicer for build methods.
+                child: const Icon(
+                    Icons.insert_emoticon)), // This trailing comma makes auto-formatting nicer for build methods.
           );
         });
   }
